@@ -1,0 +1,10 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "!!¾È³ç, World!" << endl;
+
+    return 0;
+}
