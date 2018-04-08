@@ -1,4 +1,4 @@
-#include <stdio.h.>
+#include <stdio.h>
 #include <string.h>
 
 int stack[10001] = {0, };
@@ -83,4 +83,6 @@ int main(void)
             top();
         }
     }
+
+    return 0;
 }
