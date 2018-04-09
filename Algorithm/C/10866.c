@@ -1,111 +1,116 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-int deck[20001] = {0, };
-int size = 0;
-int front = 0;
-int tail = 0;
+typedef struct NODE 
+{
+    struct NODE * previous;
+    struct NODE * next;
+    int variable;
+}NODE;
 
-void push_front(int integer)
-{ 
-    if (size == 0)
+typedef struct DEQUE 
+{
+    NODE * front;
+    NODE * rear;
+    int size;
+}DEQUE;
+
+void push_front(DEQUE *deq, int num)
+{
+    printf("push_front!! %d, %d\n", deq->size, num);
+    NODE * node = (NODE*)malloc(sizeof(NODE));
+    node->next = NULL;
+    node->previous = NULL;
+    node->variable = num;
+    if (deq->size == 0)
     {
-        size++;
-        front = size;
-        tail = size;
-        deck[size] = integer;
+        deq->front = node;
+        deq->rear = node;
+        deq->size += 1;
     }
     else
     {
-        int index = size;
-        int tail = size;
-        for (int i = size; i > 0; i--)
-        {
-            deck[i + 1] = deck[i];
-        }
-        deck[front] = integer;
+        node->previous = deq->front;
+        deq->front->next = node;
+        deq->front = node;
+        deq->size += 1;
     }
 }
 
-void push_back(int integer)
-{  
+void push_back(DEQUE *deque, int num)
+{
+    NODE *node = (NODE*)malloc(sizeof(NODE));
+    if (deque->size == 0)
+    {
+        node->next = NULL;
+        node->previous = NULL;
+        node->variable = num;
+        deque->front = node;
+        deque->rear = node;
+        deque->size = 0;
+    }
+    else
+    {
+        node->next = deque->rear;
+        node->previous = NULL;
+        node->variable = num;
+        deque->rear->previous = node;
+        deque->rear = node;
+        deque->size += 1;
+    }
 }
 
-int pop_front()
+void pop_front(DEQUE *deque)
 {
-}
-int pop_back()
-{
-}
-
-void isize()
-{
-}
-
-void empty()
-{
+    if (deque->size == 0)
+    {
+        printf("%d\n", -1);
+    }
+    else
+    {
+        printf("%d\n", deque->front->variable);
+    }
 }
 
-void front()
+void pop_back()
 {
-}
-void back()
-{
+
 }
 
 int main(void)
 {
-    int N, integer; // 1 <= N <= 10,000
-    char cpush_front[] = "push_front";
-    char cpush_back[] = "push_back";
-    char cpop_front[] = "pop_front";
-    char cpop_back[] = "pop_back";
-    char csize[] = "size";
-    char cempty[] = "empty";
-    char cfront[] = "front";
-    char cback[] = "back";
+    DEQUE *deq = (DEQUE*)malloc(sizeof(DEQUE));
+    deq->front = NULL;
+    deq->rear = NULL;
+    deq->size = 0;
 
-    scanf("%d", &N);
-    for (int i = 0; i < N; i++)
+    int test_case, NUMBER = 0;
+    char command[6];
+
+    scanf("%d", &test_case);
+    for (int i = 0; i < test_case; i++)
     {
-        char order[12];
-        scanf("%s", order);
-
-        if (!strcmp(cpush_front, order))
+        scanf("%s", command);
+        if (strcmp(command, "push_front") == 0)
         {
-            scanf("%d", &integer);
-            push_front(integer);
-        } 
-        if (!strcmp(cpush_back, order))
-        {
-            scanf("%d", &integer);
-            push_back(integer);
-        } 
-        if (!strcmp(cpop_front, order))
-        {
-            pop_front();
+            scanf("%d", &NUMBER);
+            push_front(deq, NUMBER);
         }
-        if (!strcmp(cpop_back, order))
+        else if (strcmp(command, "push_back") == 0)
+        {
+            scanf("%d", &NUMBER);
+            push_back(deq, NUMBER);
+        }
+        else if (strcmp(command, "pop_front") == 0)
+        {
+            pop_front(deq);
+        }
+        else if (strcmp(command, "pop_back") == 0)
         {
             pop_back();
         }
-        if (!strcmp(csize, order))
-        {
-            isize();
-        }
-        if (!strcmp(cempty, order))
-        {
-            empty();
-        }
-        if (!strcmp(cfront, order))
-        {
-            front();
-        }
-        if (!strcmp(cback, order))
-        {
-            back();
-        }
     }
 
-    return 0;
+    return 1;
 }
